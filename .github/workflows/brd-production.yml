@@ -5,7 +5,7 @@ on:
       - main
 
 jobs:
-  build-release-region-1:
+  build-release-region:
     uses: mailprotector/workflows/.github/workflows/docker-build-ecr.yml@main
     with:
       build_env: production
@@ -14,16 +14,7 @@ jobs:
       AWS_ACCESS_KEY_ID: ${{ secrets.PRODUCTION_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.PRODUCTION_SECRET_ACCESS_KEY }}
       AWS_REGION: ${{ secrets.AWS_REGION_1 }}
-
-    build-release-region-2:
-    uses: mailprotector/workflows/.github/workflows/docker-build-ecr.yml@main
-    with:
-      build_env: production
-      ECR_REPOSITORY: fluentbit
-    secrets:
-      AWS_ACCESS_KEY_ID: ${{ secrets.PRODUCTION_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.PRODUCTION_SECRET_ACCESS_KEY }}
-      AWS_REGION: ${{ secrets.AWS_REGION_2 }}
+      AWS_REGION_2: ${{ secrets.AWS_REGION_2 }}
 
 #env:
 #  APP_NAME: fluentbit
