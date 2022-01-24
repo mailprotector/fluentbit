@@ -87,7 +87,6 @@ jobs:
 
   build-release-2:
     name: Build & Release to second region
-    needs: build-release-1
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
