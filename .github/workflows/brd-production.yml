@@ -5,7 +5,7 @@ on:
       - main
 
 jobs:
-  build-release-region-1:
+  build-release-region:
     uses: mailprotector/workflows/.github/workflows/docker-build-ecr.yml@main
     with:
       build_env: production
