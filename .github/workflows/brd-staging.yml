@@ -14,7 +14,7 @@ env:
 jobs:
   # This job uses Buildx layer caching
   build-release-1:
-    name: Build & Release to ${{ secrets..AWS_REGION_1 }} Region
+    name: Build & Release to first region
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
