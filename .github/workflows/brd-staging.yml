@@ -9,7 +9,7 @@ jobs:
     uses: mailprotector/workflows/.github/workflows/docker-build-ecr.yml@main
     with:
       build_env: staging
-      ECR_REPOSITORY: rspamd
+      ECR_REPOSITORY: fluentbit
     secrets:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
