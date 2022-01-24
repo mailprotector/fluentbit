@@ -32,7 +32,7 @@ jobs:
         run: |
           TAG=$(echo $GITHUB_SHA | head -c7)
           echo ::set-output name=tagged_image::${TAG}
-          echo ::set-output name=latest_image::${APP_ENV}
+          echo ::set-output name=latest_image::latest
           echo ::set-output name=tag::${TAG}
 
       - name: Set up Docker Buildx
@@ -104,7 +104,7 @@ jobs:
         run: |
           TAG=$(echo $GITHUB_SHA | head -c7)
           echo ::set-output name=tagged_image::${TAG}
-          echo ::set-output name=latest_image::${APP_ENV}
+          echo ::set-output name=latest_image::latest
           echo ::set-output name=tag::${TAG}
 
       - name: Set up Docker Buildx
