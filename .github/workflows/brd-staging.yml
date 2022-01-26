@@ -8,7 +8,6 @@ jobs:
   build-release:
     uses: mailprotector/workflows/.github/workflows/build-ecr-single.yml@main
     with:
-      build_env: staging
       ECR_REPOSITORY: fluentbit
     secrets:
       AWS_IAM_ROLE_ARN: ${{ secrets.STAGING_IAM_ROLE_ARN }}
