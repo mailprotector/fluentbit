@@ -6,11 +6,10 @@ on:
 
 jobs:
   build-release:
-    uses: mailprotector/workflows/.github/workflows/docker-build-ecr.yml@main
+    uses: mailprotector/workflows/.github/workflows/build-ecr-single.yml@main
     with:
       build_env: staging
       ECR_REPOSITORY: fluentbit
     secrets:
-      AWS_ACCESS_KEY_ID: ${{ secrets.STAGING_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.STAGING_SECRET_ACCESS_KEY }}
+      AWS_IAM_ROLE_ARN: ${{ secrets.STAGING_IAM_ROLE_ARN }}
       AWS_REGION: ${{ secrets.AWS_REGION_1 }}
