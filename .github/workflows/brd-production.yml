@@ -12,17 +12,17 @@ env:
   MATRIX: "{\"aws-region\":[us-east-1, us-east-2]}"
 
 jobs:
-  set-region-matrix:
+  set-matrix:
     runs-on: ubuntu-latest
-      outputs:
-		  	# This needs to match your step's id and name parameters
-        matrix: ${{ steps.set-matrix.outputs.matrix }}
-      steps:
-		  	# Important: Do not forget the id!
-        - id: set-matrix
-          run: |
-            echo "::set-output name=matrix::$MATRIX"
-            echo "$MATRIX"
+    outputs:
+		  # This needs to match your step's id and name parameters
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+			# Important: Do not forget the id!
+      - id: set-matrix
+        run: |
+          echo "::set-output name=matrix::$MATRIX"
+          echo "$MATRIX"
 
 #  build-release:
 #    name: Build Docker image and push to ECR
