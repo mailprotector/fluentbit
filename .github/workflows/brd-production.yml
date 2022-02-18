@@ -25,6 +25,9 @@ jobs:
 #  build-release:
 #    name: Build Docker image and push to ECR
 #    runs-on: ubuntu-latest
+#    needs: set-matrix
+#    stategy:
+#      matrix: ${{fromJSON(needs.set-matrix.outputs.matrix)}}
 #
 #    steps:
 #      - uses: actions/checkout@v2
