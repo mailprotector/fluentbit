@@ -27,7 +27,7 @@ jobs:
     name: Build Docker image and push to ECR
     runs-on: ubuntu-latest
     needs: set-matrix
-    stategy:
+    strategy:
       matrix: ${{fromJSON(needs.set-matrix.outputs.matrix)}}
 
     steps:
