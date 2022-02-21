@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main
+      - multi-region
 
 permissions:
   id-token: write # required to use OIDC authentication
@@ -22,39 +23,41 @@ jobs:
           echo "::set-output name=matrix::$MATRIX"
           echo "$MATRIX"
 
-#  build-release:
-#    name: Build Docker image and push to ECR
-#    runs-on: ubuntu-latest
-#    needs: set-matrix
-#    stategy:
-#      matrix: ${{fromJSON(needs.set-matrix.outputs.matrix)}}
-#
-#    steps:
-#      - uses: actions/checkout@v2
-#
-#      - name: Configure AWS credentials for first region
-#        id: config-aws-region-1
-#        uses: aws-actions/configure-aws-credentials@v1
-#        with:
-#          role-to-assume: ${{ secrets.AWS_IAM_ROLE_ARN }}
-#          aws-region: ${{ secrets.AWS_REGION }}
-#  
-#      - name: Prepare
-#        id: prep
-#        run: |
-#          TAG=$(echo $GITHUB_SHA | head -c7)
-#          echo ::set-output name=tagged_image::${TAG}
-#          echo ::set-output name=latest_image::latest
-#          echo ::set-output name=tag::${TAG}
-#  
-#      - name: Set up Docker Buildx
-#        id: buildx
-#        uses: docker/setup-buildx-action@master
-#  
-#      - name: Login to Amazon ECR
-#        id: login-ecr-region-1
-#        uses: aws-actions/amazon-ecr-login@v1
-#  
+  build-release:
+    name: Build Docker image and push to ECR
+    runs-on: ubuntu-latest
+    needs: set-matrix
+    stategy:
+      matrix: ${{fromJSON(needs.set-matrix.outputs.matrix)}}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Configure AWS credentials
+        id: config-aws-region
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: ${{ secrets.AWS_IAM_ROLE_ARN }}
+          aws-region: ${{ matrix.aws-region }}
+  
+      - name: Prepare
+        id: prep
+        run: |
+          TAG=$(echo $GITHUB_SHA | head -c7)
+          echo ::set-output name=tagged_image::${TAG}
+          echo ::set-output name=latest_image::latest
+          echo ::set-output name=tag::${TAG}
+  
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@master
+  
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+        with:
+          aws-region: ${{ matrix.aws-region }} 
+  
 #      - name: Cache Docker layers
 #        uses: actions/cache@v2
 #        with:
@@ -74,7 +77,6 @@ jobs:
 #          tags: ${{ steps.prep.outputs.tagged_image }}
 #          cache-from: type=local,src=/tmp/.buildx-cache
 #          cache-to: type=local,dest=/tmp/.buildx-cache-new
-#
 #  
 #      - name: Tag and Push image to AWS ECR as SHA
 #        env:
@@ -86,31 +88,6 @@ jobs:
 #      - name: Tag and Push image to AWS ECR as latest
 #        env:
 #          ECR_URL: ${{ steps.login-ecr-region-1.outputs.registry }}/${{ inputs.ECR_REPOSITORY }}:${{ steps.prep.outputs.latest_image }}
-#        run: |
-#          docker tag ${{ steps.prep.outputs.tagged_image }} ${{ env.ECR_URL }}
-#          docker push ${{ env.ECR_URL }}
-#
-#      - name: Configure AWS credentials for second region
-#        id: config-aws-region-2
-#        uses: aws-actions/configure-aws-credentials@v1
-#        with:
-#          role-to-assume: ${{ secrets.AWS_IAM_ROLE_ARN }}
-#          aws-region: ${{ secrets.AWS_REGION_2 }}
-#
-#      - name: Login to Amazon ECR
-#        id: login-ecr-region-2
-#        uses: aws-actions/amazon-ecr-login@v1
-#
-#      - name: Tag and Push image to AWS ECR as SHA
-#        env:
-#          ECR_URL: ${{ steps.login-ecr-region-2.outputs.registry }}/${{ inputs.ECR_REPOSITORY }}:${{ steps.prep.outputs.tagged_image }}
-#        run: |
-#          docker tag ${{ steps.prep.outputs.tagged_image }} ${{ env.ECR_URL }}
-#          docker push ${{ env.ECR_URL }}
-#  
-#      - name: Tag and Push image to AWS ECR as latest
-#        env:
-#          ECR_URL: ${{ steps.login-ecr-region-2.outputs.registry }}/${{ inputs.ECR_REPOSITORY }}:${{ steps.prep.outputs.latest_image }}
 #        run: |
 #          docker tag ${{ steps.prep.outputs.tagged_image }} ${{ env.ECR_URL }}
 #          docker push ${{ env.ECR_URL }}
