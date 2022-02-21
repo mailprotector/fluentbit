@@ -3,7 +3,6 @@ on:
   push:
     branches:
       - main
-      - multi-region
 
 permissions:
   id-token: write # required to use OIDC authentication
