@@ -21,7 +21,7 @@ jobs:
           password: ${{ secrets.DOCKER_TOKEN }}
 
       - name: Extract metadata (tags, labels) for Docker
-        id: Generate docker metadata for tagging
+        id: metadata
         uses: docker/metadata-action@v3
         with:
           images: ${{ env.dockerhub_name }}
