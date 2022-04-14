@@ -21,15 +21,15 @@ jobs:
           password: ${{ secrets.DOCKER_TOKEN }}
 
       - name: Extract metadata (tags, labels) for Docker
-        id: metadata
+        id: Generate docker metadata for tagging
         uses: docker/metadata-action@v3
         with:
           images: ${{ env.dockerhub_name }}
-#
-#      - name: Build and push
-#        uses: docker/build-push-action@v2
-#        with:
-#          context: .
-#          push: true
-#          tags: ${{ steps.meta.outputs.tags }}
-#          labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
