@@ -20,11 +20,11 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_TOKEN }}
 
-#      - name: Extract metadata (tags, labels) for Docker
-#        id: Generate docker meta data for tagging
-#        uses: docker/metadata-action@v3
-#        with:
-#          images: ${{ env.dockerhub_name }}
+      - name: Extract metadata (tags, labels) for Docker
+        id: Generate docker meta data for tagging
+        uses: docker/metadata-action@v3
+        with:
+          images: ${{ env.dockerhub_name }}
 #
 #      - name: Build and push
 #        uses: docker/build-push-action@v2
