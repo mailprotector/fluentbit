@@ -72,8 +72,9 @@ jobs:
         env:
           ECR_URL: ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ steps.prep.outputs.tagged_image }}
         run: |
-          docker tag ${{ steps.prep.outputs.tagged_image }} ${{ env.ECR_URL }}
-          docker push ${{ env.ECR_URL }}
+          echo $ECR_URL
+          # docker tag ${{ steps.prep.outputs.tagged_image }} ${{ env.ECR_URL }}
+          # docker push ${{ env.ECR_URL }}
   
       # - name: Tag and Push image to AWS ECR as latest
       #   env:
