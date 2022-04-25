@@ -2,7 +2,7 @@ name: build-release-deploy
 on:
   push:
     branches:
-      - dj_public
+      - main
 
 permissions:
   id-token: write # required to use OIDC authentication
@@ -76,12 +76,12 @@ jobs:
           docker tag ${{ steps.prep.outputs.tagged_image }} ${{ env.ECR_URL }}
           docker push ${{ env.ECR_URL }}
   
-      # - name: Tag and Push image to AWS ECR as latest
-      #   env:
-      #     ECR_URL: ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ steps.prep.outputs.latest_image }}
-      #   run: |
-      #     docker tag ${{ steps.prep.outputs.tagged_image }} ${{ env.ECR_URL }}
-      #     docker push ${{ env.ECR_URL }}
+      - name: Tag and Push image to AWS ECR as latest
+        env:
+          ECR_URL: ${{ env.ECR_PUBLIC_URL}}/${{ env.ECR_REPOSITORY }}:${{ steps.prep.outputs.tagged_image }}
+        run: |
+          docker tag ${{ steps.prep.outputs.tagged_image }} ${{ env.ECR_URL }}
+          docker push ${{ env.ECR_URL }}
   
       - name: Move cache
         run: |
